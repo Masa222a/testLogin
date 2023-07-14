@@ -8,6 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,6 +28,9 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var client: GoogleSignInClient
+    //fb login
+    private lateinit var fbSignIn: Button
+    private lateinit var callbackManager: CallbackManager
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,10 +67,53 @@ class LoginActivity : AppCompatActivity() {
         //let do login now.
         //first we add a login button
 
+
+        //fb login
+        fbSignIn = findViewById(R.id.facebookSignInButton)
+
+        callbackManager = CallbackManager.Factory.create()
+
+        val accessToken = AccessToken.getCurrentAccessToken()
+
+        if (accessToken != null && !accessToken.isExpired) {
+            val intent = Intent(this, MainActivity::class.java)
+
+            startActivity(intent)
+
+            finish()
+        }
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+        object : FacebookCallback<LoginResult> {
+            override fun onCancel() {
+
+            }
+
+            override fun onError(error: FacebookException) {
+
+            }
+
+            override fun onSuccess(result: LoginResult) {
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+
+                startActivity(intent)
+
+                finish()
+            }
+
+        })
+
+        fbSignIn.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile, email"))
+
+        }
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 10001) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
