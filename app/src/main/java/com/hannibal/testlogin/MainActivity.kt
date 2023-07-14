@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var fbImage: ImageView
+//    private lateinit var fbImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,35 +25,31 @@ class MainActivity : AppCompatActivity() {
 
         btn.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            //fb logout
-            LoginManager.getInstance().logOut()
+//            //fb logout
+//            LoginManager.getInstance().logOut()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
-        //fb login
-        fbImage = findViewById(R.id.fb_image)
+//        //fb login
+//        fbImage = findViewById(R.id.fb_image)
 
-        val accessToken = AccessToken.getCurrentAccessToken()
-
-        val request = GraphRequest.newMeRequest(
-            accessToken,
-            object : GraphRequest.GraphJSONObjectCallback {
-                override fun onCompleted(obj: JSONObject?, response: GraphResponse?) {
-                    Log.d("fb_response", "$obj")
-                    val img = obj?.getJSONObject("picture")
-                        ?.getJSONObject("data")
-                        ?.getString("url")
-
-                    Glide.with(applicationContext).load(img).into(fbImage)
-                }
-
-            }
-            )
-
-        val parameters = Bundle()
-        parameters.putString("field", "pictire")
-
-        request.executeAsync()
+//        val accessToken = AccessToken.getCurrentAccessToken()
+//
+//        val request = GraphRequest.newMeRequest(
+//            accessToken
+//        ) { obj, _ ->
+//            Log.d("fb_response", "$obj")
+//            val img = obj?.getJSONObject("picture")
+//                ?.getJSONObject("data")
+//                ?.getString("url")
+//
+//            Glide.with(applicationContext).load(img).into(fbImage)
+//        }
+//
+//        val parameters = Bundle()
+//        parameters.putString("field", "pictire")
+//
+//        request.executeAsync()
     }
 }
