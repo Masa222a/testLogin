@@ -35,9 +35,9 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var client: GoogleSignInClient
-    //fb login
-    private lateinit var fbSignIn: LoginButton
-    private lateinit var callbackManager: CallbackManager
+//    //fb login
+//    private lateinit var fbSignIn: LoginButton
+//    private lateinit var callbackManager: CallbackManager
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,94 +75,57 @@ class LoginActivity : AppCompatActivity() {
         //first we add a login button
 
 
-        //fb login
-        fbSignIn = findViewById(R.id.facebookSignInButton)
+//        //fb login
+//        fbSignIn = findViewById(R.id.facebookSignInButton)
 
-        callbackManager = CallbackManager.Factory.create()
-        fbSignIn.setReadPermissions(listOf("email"))
-
-        fbSignIn.registerCallback(
-            callbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(loginResult: LoginResult) {
-                    Log.d(TAG, "facebook:onSuccess:$loginResult")
-                    handleFacebookAccessToken(loginResult.accessToken)
-                }
-
-                override fun onCancel() {
-                    Log.d(TAG, "facebook:onCancel")
-                }
-
-                override fun onError(error: FacebookException) {
-                    Log.d(TAG, "facebook:onError", error)
-                }
-            },
-        )
-
-//        val accessToken = AccessToken.getCurrentAccessToken()
+//        callbackManager = CallbackManager.Factory.create()
+//        fbSignIn.setReadPermissions(listOf("email"))
 //
-//        if (accessToken != null && !accessToken.isExpired) {
-//            val intent = Intent(this, MainActivity::class.java)
+//        fbSignIn.registerCallback(
+//            callbackManager,
+//            object : FacebookCallback<LoginResult> {
+//                override fun onSuccess(loginResult: LoginResult) {
+//                    Log.d(TAG, "facebook:onSuccess:$loginResult")
+//                    handleFacebookAccessToken(loginResult.accessToken)
+//                }
 //
-//            startActivity(intent)
+//                override fun onCancel() {
+//                    Log.d(TAG, "facebook:onCancel")
+//                }
 //
-//            finish()
-//        }
-//
-//        LoginManager.getInstance().registerCallback(callbackManager,
-//        object : FacebookCallback<LoginResult> {
-//            override fun onCancel() {
-//
-//            }
-//
-//            override fun onError(error: FacebookException) {
-//
-//            }
-//
-//            override fun onSuccess(result: LoginResult) {
-//                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//
-//                startActivity(intent)
-//
-//                finish()
-//            }
-//
-//        })
-//
-//        fbSignIn.setOnClickListener {
-//            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile, email"))
-//
-//        }
-
+//                override fun onError(error: FacebookException) {
+//                    Log.d(TAG, "facebook:onError", error)
+//                }
+//            },
+//        )
 
     }
 
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
-
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-
-    }
+//    private fun handleFacebookAccessToken(token: AccessToken) {
+//        Log.d(TAG, "handleFacebookAccessToken:$token")
+//
+//        val credential = FacebookAuthProvider.getCredential(token.token)
+//        auth.signInWithCredential(credential)
+//            .addOnCompleteListener(this) { task ->
+//                if (task.isSuccessful) {
+//                    // Sign in success, update UI with the signed-in user's information
+//                    Log.d(TAG, "signInWithCredential:success")
+//                    val user = auth.currentUser
+//                } else {
+//                    // If sign in fails, display a message to the user.
+//                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+//                    Toast.makeText(
+//                        baseContext,
+//                        "Authentication failed.",
+//                        Toast.LENGTH_SHORT,
+//                    ).show()
+//                }
+//            }
+//
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        callbackManager.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 10001) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)

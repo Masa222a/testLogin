@@ -31,25 +31,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        //fb login
-//        fbImage = findViewById(R.id.fb_image)
-
-//        val accessToken = AccessToken.getCurrentAccessToken()
-//
-//        val request = GraphRequest.newMeRequest(
-//            accessToken
-//        ) { obj, _ ->
-//            Log.d("fb_response", "$obj")
-//            val img = obj?.getJSONObject("picture")
-//                ?.getJSONObject("data")
-//                ?.getString("url")
-//
-//            Glide.with(applicationContext).load(img).into(fbImage)
-//        }
-//
-//        val parameters = Bundle()
-//        parameters.putString("field", "pictire")
-//
-//        request.executeAsync()
     }
 }
